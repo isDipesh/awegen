@@ -63,3 +63,8 @@ Add the components required to your imports section
 ## Usage
 
 Browse to /gii, login and select AweModel Generator to create Model and then AweCrud to generate Controller and Views.
+
+## Resources
+
+[Awegen on my blog](http://motorscript.com/awegen-code-generator-for-yii/)
+[Awegen on official Yii site](http://www.yiiframework.com/extension/awegen/)
