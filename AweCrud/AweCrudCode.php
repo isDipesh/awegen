@@ -10,7 +10,7 @@ class AweCrudCode extends CrudCode {
     public $identificationColumn = '';
     public $isJToggleColumnEnabled = true;
     public $dateTypes = array('datetime', 'date', 'time', 'timestamp');
-    public $booleanTypes = array('tinyint(1)', 'boolean', 'bool');
+    public $booleanTypes = array('tinyint(1)', 'boolean', 'bool', 'bit');
     public $emailFields = array('email', 'e-mail', 'email_address', 'e-mail_address', 'emailaddress', 'e-mailaddress');
     public $imageFields = array('image', 'picture', 'photo', 'pic', 'profile_pic', 'profile_picture', 'avatar', 'profilepic', 'profilepicture');
     public $urlFields = array('url', 'link', 'uri', 'homepage', 'webpage', 'website', 'profile_url', 'profile_link');
@@ -150,17 +150,37 @@ class AweCrudCode extends CrudCode {
         return $str;
     }
 
-    public function generateField($column, $modelClass) {
+    public function generateField($column, $modelClass, $search=false) {
         if ($column->isForeignKey) {
-            if ($column->isForeignKey) {
-                $relation = $this->findRelation($modelClass, $column);
-                //get primary key of the foreign model
-                $foreign_pk = CActiveRecord::model($relation[3])->getTableSchema()->primaryKey;
-                $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema(CActiveRecord::model($relation[3])->getTableSchema());
-                //return "echo \$form->dropDownList(\$model, '{$column->name}', CHtml::listData({$relation[3]}::model()->findAll(),'{$foreign_pk}', '{$foreign_identificationColumn}'))";
-                //requires EActiveRecordRelationBehavior
-                return "echo \$form->dropDownList(\$model, '{$relation[0]}', CHtml::listData({$relation[3]}::model()->findAll(),'{$foreign_pk}', '{$foreign_identificationColumn}'))";
+            $relation = $this->findRelation($modelClass, $column);
+            //get primary key of the foreign model
+            $foreign_pk = CActiveRecord::model($relation[3])->getTableSchema()->primaryKey;
+            $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema(CActiveRecord::model($relation[3])->getTableSchema());
+            //if the relation name is parent or child and if the relation is with items from same model,
+            //don't allow any item to be parent/child of itself
+
+            $prompt = '';
+            if ($column->allowNull && $column->defaultValue == NULL) {
+                $prompt = ", array('prompt' => 'None')";
             }
+
+            if (($relation[0] == 'parent' || $relation[0] == 'child') && $relation[3] == $modelClass && !$search) {
+
+                $str = "\$allModels = {$relation[3]}::model()->findAll();
+                ";
+                $str .= 'foreach ($allModels as $key => $aModel) {
+                    ';
+                $str .= '    if ($aModel->id == $model->id)
+                    ';
+                $str .= '        unset($allModels[$key]);
+                    ';
+                $str .= '}
+                    ';
+                $str .= "echo \$form->dropDownList(\$model, '{$relation[0]}', CHtml::listData(\$allModels, '{$foreign_pk}', '{$foreign_identificationColumn}'){$prompt});\n";
+                return $str;
+            }
+            //requires EActiveRecordRelationBehavior
+            return "echo \$form->dropDownList(\$model, '{$relation[0]}', CHtml::listData({$relation[3]}::model()->findAll(),'{$foreign_pk}', '{$foreign_identificationColumn}'){$prompt})";
         } else {
 
             if (in_array(strtolower($column->dbType), $this->booleanTypes))
@@ -207,13 +227,15 @@ class AweCrudCode extends CrudCode {
 
                 return $string;
             } else if (in_array(strtolower($column->dbType), $this->dateTypes)) {
+                $mode = strtolower(($column->dbType == 'timestamp') ? 'datetime' : $column->dbType);
                 return ("\$this->widget('CJuiDateTimePicker',
 						 array(
 							'model'=>\$model,
                                                         'name'=>'{$modelClass}[{$column->name}]',
-							'language'=> substr(Yii::app()->language,0,strpos(Yii::app()->language,'_')),
+							//'language'=> substr(Yii::app()->language,0,strpos(Yii::app()->language,'_')),
+                                                        'language'=> 'en',
 							'value'=>\$model->{$column->name},
-                                                        'mode' => '" . strtolower($column->dbType) . "',
+                                                        'mode' => '" . $mode . "',
 							'options'=>array(
                                                                         'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
                                                                         'showButtonPanel'=>true,
@@ -294,9 +316,12 @@ class AweCrudCode extends CrudCode {
         $controller = $modulePrefix . strtolower(substr($relation[1], 0, 1)) . substr($relation[1], 1);
         return $controller;
     }
-    
-    public function hasBooleanColumns(){
-        
+
+    public function hasBooleanColumns($columns) {
+        foreach ($columns as $column)
+            if (in_array(strtolower($column->dbType), $this->booleanTypes))
+                return true;
+        return false;
     }
 
 }

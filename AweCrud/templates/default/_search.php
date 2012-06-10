@@ -12,7 +12,7 @@
 ?>
 	<div class="row">
 		<?php echo "<?php echo \$form->label(\$model, '{$column->name}'); ?>\n"; ?>
-		<?php echo "<?php " . $this->generateField($column,$this->modelClass)."; ?>\n"; ?>
+		<?php echo "<?php " . $this->generateField($column,$this->modelClass, true)."; ?>\n"; ?>
 	</div>
 
 <?php endforeach; ?>

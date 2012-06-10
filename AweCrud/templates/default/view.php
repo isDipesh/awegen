@@ -40,6 +40,7 @@ foreach ($this->tableSchema->columns as $column){
 			
 			echo "\t\t\t'value'=>{$value},\n";
 			echo "\t\t\t'type'=>'html',\n";
+                        break;
 			}
 			}
 			echo "\t\t),\n";
@@ -59,11 +60,6 @@ echo "?>";
 		$pk = $relatedModel->tableSchema->primaryKey;
 		
 		if ($relation[0] == 'CManyManyRelation' || $relation[0] == 'CHasManyRelation') {
-			#$model = CActiveRecord::model($relation[1]);
-			#if (!$pk = $model->tableSchema->primaryKey)
-			#	$pk = 'id';
-
-			#$suggestedtitle = $this->suggestName($model->tableSchema->columns);
                         $relatedModel = CActiveRecord::model($relation[1]);
                         $identificationColumn = AweCrudCode::getIdentificationColumnFromTableSchema($relatedModel->tableSchema);
 			echo '<h2>';
@@ -79,26 +75,6 @@ echo "?>";
 			echo CHtml::closeTag('ul');
 
 		}
-		if ($relation[0] == 'CHasOneRelation') {
-			$relatedModel = CActiveRecord::model($relation[1]);
-                        $identificationColumn = AweCrudCode::getIdentificationColumnFromTableSchema($relatedModel->tableSchema);
-			if (!$pk = $relatedModel->tableSchema->primaryKey)
-				$pk = 'id';
-			
-			#$suggestedtitle = $this->suggestName($model->tableSchema->columns);
-			echo '<h2>';
-			echo "<?php echo CHtml::link(Yii::t('app','".$relation[1]."'), array('".$controller."'));?>";
-			echo "</h2>\n";
-			echo CHtml::openTag('ul');
-			echo "<?php \$foreignobj = \$model->{$key}; \n
-					if (\$foreignobj !== null) {
-					echo '<li>';
-					echo '#'.\$model->{$key}->{$pk}.' ';
-					echo CHtml::link(\$model->{$key}->{$identificationColumn}, array('{$controller}/view','{$pk}'=>\$model->{$key}->{$pk}));\n							
-					}
-					?>";
-			echo CHtml::closeTag('ul');
-
-		}
+		
 	}
 ?>
