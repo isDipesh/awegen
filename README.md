@@ -26,7 +26,7 @@ awegen borrows goodies from giix and gtc.
 15. Creates checkboxes for fields with many-to-many relations
 16. Keeps generated code in abstract base model so that regeneration doesn't overwrite user changes
 17. Guesses identification column for models and uses them in headings and breadcrumbs  
-(Looks for fields - name, title, slug, any field  with `name` in its name, first non-numeric field, primarykey in pripority order)
+(Looks for following fields in the order of priority - name, title, slug, any field  with `name` in its name, first non-numeric field, primary key)
 18. Handles parent-child relationship of items among same model
 (Allows an item to be parent/child of any other items from the same table but not itself)
 

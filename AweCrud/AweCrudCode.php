@@ -73,10 +73,12 @@ class AweCrudCode extends CrudCode {
     }
 
     public function getDetailViewAttribute($column) {
+        
         if ($column->name == 'id' || in_array($column->name, $this->passwordFields)) { // only admin user can see id and password
+            $visible=(Yii::app()->hasModule('users'))?"Yii::app()->getModule('user')->isAdmin()":"Yii::app()->user->id=='admin'";
             return "array(
                         'name'=>'{$column->name}',
-                        'visible'=>Yii::app()->getModule('user')->isAdmin()
+                        'visible'=>{$visible}
                     ),";
         }
 
