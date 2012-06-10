@@ -39,7 +39,6 @@ Extract the awegen folder from the archive to extensions directory of your appli
 Add the path of awegen to generatorPaths section in the module configuration in `config/main.php`
 
 ~~~
-[php]
 'modules' => array(
         'gii' => array(
             'class' => 'system.gii.GiiModule',
@@ -55,7 +54,6 @@ Add the path of awegen to generatorPaths section in the module configuration in 
 Add the components required to your imports section
 
 ~~~
-[php]
 'import' => array(
     ...
     'application.extensions.awegen.components.*',
