@@ -1,10 +1,7 @@
 # awegen
 
-awegen is a MVC generator for Yii framework.  
-This can be used as an extension in your Yii powered app.
-
+awegen is a code generator for Yii framework.  
 awegen borrows goodies from giix and gtc.  
-It handles all kinds of relations.  
 
 ### What It Does?
 
@@ -32,7 +29,7 @@ It handles all kinds of relations.
 
 ### Installation
 
-Download from <>
+Download from <https://github.com/awecms/awegen>
 
 Extract the awegen folder from the archive to extensions directory of your application.
 
