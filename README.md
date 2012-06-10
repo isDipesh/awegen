@@ -32,11 +32,11 @@ awegen borrows goodies from giix and gtc.
 
 ## Installation
 
-Download from <https://github.com/awecms/awegen>
+Download from <https://github.com/awecms/awegen/downloads>
 
 Extract the awegen folder from the archive to extensions directory of your application.
 
-Add the path of awegen to generatorPaths section in the module configuration in `config/main.php`
+Add the path of awegen to generatorPaths section in gii module configuration in `config/main.php`
 
 ~~~
 'modules' => array(
