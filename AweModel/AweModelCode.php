@@ -57,6 +57,7 @@ class AweModelCode extends ModelCode {
 
         $this->relations = $this->generateRelations();
 
+        $this->files = array();
         foreach ($this->tables as $table) {
 
             foreach ($table->columns as $key => $column)
@@ -78,8 +79,7 @@ class AweModelCode extends ModelCode {
                 'rules' => $this->generateRules($table),
                 'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
             );
-
-            $this->files = array();
+            
             $this->files[] = new CCodeFile(
                             Yii::getPathOfAlias($this->modelPath . '.' . $className) . '.php',
                             $this->render($templatePath . DIRECTORY_SEPARATOR . 'model.php', $params)
