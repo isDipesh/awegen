@@ -58,6 +58,7 @@ class AweModelCode extends ModelCode {
         $this->relations = $this->generateRelations();
             $this->files = array();
 
+        $this->files = array();
         foreach ($this->tables as $table) {
 
             foreach ($table->columns as $key => $column)
