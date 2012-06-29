@@ -270,6 +270,8 @@ class AweCrudCode extends CrudCode {
         if ($column->isForeignKey) {
             $columnName = $column->name;
             $relations = $this->getRelations();
+            $relatedModel = null;
+            $relatedModelName=null;
             foreach ($relations as $relationName => $relation) {
                 if ($relation[2] == $columnName) {
                     $relatedModel = CActiveRecord::model($relation[1]);
@@ -277,10 +279,22 @@ class AweCrudCode extends CrudCode {
                 }
             }
 
-            return "array(
-                			'name' => '{$column->name}',
-                                        'value' => 'isset(\$data->{$relatedColumnName})?\$data->{$relatedColumnName}:\"N/A\"'
+            $filter = '';
+            if( $relatedModel )
+            {
+              $foreign_pk = $relatedModel->getTableSchema()->primaryKey;
+              $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema($relatedModel->getTableSchema());
+              $filter = "CHtml::listData({$relatedModelName}::model()->findAll(),'{$foreign_pk}','{$foreign_identificationColumn}')";
+            }
+
+              return "array(
+                			'name'   => '{$column->name}',
+                      'value'  => 'isset(\$data->{$relatedColumnName})?\$data->{$relatedColumnName}:\"N/A\"',
+                      'filter' => $filter,
                 )";
+
+
+
         }
 
         // Boolean or bit.
