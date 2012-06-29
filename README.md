@@ -62,7 +62,8 @@ Add the components required to your imports section
 
 ## Usage
 
-Browse to /gii, login and select AweModel Generator to create Model and then AweCrud to generate Controller and Views.
+Browse to /gii, login and select AweModel Generator to create Model and then AweCrud to generate Controller and Views.  
+Use `*` for table name in Model generator to preview all models. Generate all or selectively.
 
 ## Resources
 
