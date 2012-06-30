@@ -74,7 +74,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 <?php
 			foreach(CActiveRecord::model($this->modelClass)->relations() as $key => $relation) {
 				if($relation[0] == CActiveRecord::BELONGS_TO || $relation[0] == CActiveRecord::MANY_MANY)
-                                    printf("\t\t\t\$model->$key = \$_POST['$this->modelClass']['$key'];\n");	
+                                    printf("if (isset(\$_POST['$this->modelClass']['$key'])) \$model->$key = \$_POST['$this->modelClass']['$key'];\n\t\telse\n\t\t\$model->$key = array();\n");	
 			}
 ?>
                 try {

@@ -75,7 +75,7 @@ class AweCrudCode extends CrudCode {
     public function getDetailViewAttribute($column) {
         
         if ($column->name == 'id' || in_array($column->name, $this->passwordFields)) { // only admin user can see id and password
-            $visible=(Yii::app()->hasModule('users'))?"Yii::app()->getModule('user')->isAdmin()":"Yii::app()->user->id=='admin'";
+            $visible=(Yii::app()->hasModule('user'))?"Yii::app()->getModule('user')->isAdmin()":"Yii::app()->user->id=='admin'";
             return "array(
                         'name'=>'{$column->name}',
                         'visible'=>{$visible}
@@ -146,7 +146,7 @@ class AweCrudCode extends CrudCode {
         $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema(CActiveRecord::model($relation[1])->getTableSchema());
         $friendlyName = ucfirst($relatedModelClass);
         $str = "<label for=\"$relatedModelClass\"><?php echo Yii::t('app', '$friendlyName'); ?></label>\n";
-        $str .= "<?php echo \CHtml::checkBoxList('{$modelClass}[{$relatedModelClass}]', array_map('Awecms::getPrimaryKey',\$model->{$relatedModelClass}),
+        $str .= "<?php echo CHtml::checkBoxList('{$modelClass}[{$relatedModelClass}]', array_map('Awecms::getPrimaryKey',\$model->{$relatedModelClass}),
             CHtml::listData({$relation[1]}::model()->findAll(),'{$foreign_pk}', '{$foreign_identificationColumn}'),
             array('attributeitem' => '{$foreign_pk}', 'checkAll' => 'Select All')); ?>";
         return $str;
