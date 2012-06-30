@@ -67,5 +67,5 @@ Use `*` for table name in Model generator to preview all models. Generate all or
 
 ## Resources
 
-[Awegen on my blog](http://motorscript.com/awegen-code-generator-for-yii/)
+[Awegen on my blog](http://motorscript.com/awegen-code-generator-for-yii/)  
 [Awegen on official Yii site](http://www.yiiframework.com/extension/awegen/)
