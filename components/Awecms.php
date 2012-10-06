@@ -19,7 +19,12 @@ class Awecms {
     public static function getPrimaryKey($ar) {
         if (is_numeric($ar))
             return $ar;
-        return $ar->primaryKey;
+        $pk = $ar->getTableSchema()->primaryKey;
+        if (is_array($pk)) {
+            $pk = $pk[0];
+        }
+
+        return $pk;
     }
 
     public static function getSiteName() {
