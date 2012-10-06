@@ -283,7 +283,8 @@ class AweCrudCode extends CrudCode {
             if( $relatedModel )
             {
               $foreign_pk = $relatedModel->getTableSchema()->primaryKey;
-              $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema($relatedModel->getTableSchema());
+              $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema($relatedModel->getTableSchema());              
+              $relatedModelName = get_class($relatedModel);
               $filter = "CHtml::listData({$relatedModelName}::model()->findAll(),'{$foreign_pk}','{$foreign_identificationColumn}')";
             }
 
