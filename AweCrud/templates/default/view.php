@@ -9,8 +9,8 @@ echo "\$this->breadcrumbs = array(
 ?>
 if(!isset($this->menu) || $this->menu === array()) {
 $this->menu=array(
-	array('label'=>Yii::t('app', 'Update') , 'url'=>array('update', 'id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>)),
-	array('label'=>Yii::t('app', 'Delete') , 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>Yii::t('app', 'Update') , 'url'=>array('update', 'id'=>$model-><?php echo Awecms::getPrimaryKey($this); ?>)),
+	array('label'=>Yii::t('app', 'Delete') , 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model-><?php echo Awecms::getPrimaryKey($this); ?>),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>Yii::t('app', 'Create') , 'url'=>array('create')),
 	array('label'=>Yii::t('app', 'Manage') , 'url'=>array('admin')),
 	/*array('label'=>Yii::t('app', 'List') , 'url'=>array('index')),*/
@@ -34,7 +34,8 @@ foreach ($this->tableSchema->columns as $column){
                         $identificationColumn = AweCrudCode::getIdentificationColumnFromTableSchema($relatedModel->tableSchema);
 			$controller = $this->resolveController($relation);
 			$value = "(\$model->{$key} !== null)?";
-			$value .= "CHtml::link(\$model->{$key}->$identificationColumn, array('{$controller}/view','{$relatedModel->tableSchema->primaryKey}'=>\$model->{$key}->{$relatedModel->tableSchema->primaryKey})).' '";
+      $primaryKey = Awecms::getPrimaryKey($relatedModel);
+			$value .= "CHtml::link(\$model->{$key}->$identificationColumn, array('{$controller}/view','{$primaryKey}'=>\$model->{$key}->{$primaryKey})).' '";
 			//$value .= ".CHtml::link(Yii::t('app','Update'), array('{$controller}/update','{$relatedModel->tableSchema->primaryKey}'=>\$model->{$key}->{$relatedModel->tableSchema->primaryKey}), array('class'=>'edit'))";
 			$value .= ":'n/a'";
 			
@@ -57,7 +58,7 @@ echo "?>";
 		
 		$controller = $this->resolveController($relation);
 		$relatedModel = CActiveRecord::model($relation[1]);
-		$pk = $relatedModel->tableSchema->primaryKey;
+		$pk = Awecms::getPrimaryKey($relatedModel);
 		
 		if ($relation[0] == 'CManyManyRelation' || $relation[0] == 'CHasManyRelation') {
                         $relatedModel = CActiveRecord::model($relation[1]);

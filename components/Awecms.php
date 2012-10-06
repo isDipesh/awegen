@@ -4,7 +4,13 @@
 class Awecms {
 
     public static function getPrimaryKey($ar) {
-        return $ar->primaryKey;
+
+      $pk = $ar->getTableSchema()->primaryKey;
+      if( is_array($pk) ) {
+        $pk = $pk[0];
+      }
+
+      return $pk;
     }
 
     public static function array_to_object($array) {
