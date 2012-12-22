@@ -9,16 +9,17 @@ echo "\$this->breadcrumbs = array(
 
 if(!isset($this->menu) || $this->menu === array())
 $this->menu=array(
-	array('label'=>Yii::t('app', 'List'), 'url'=>array('index')),
-	array('label'=>Yii::t('app', 'Manage'), 'url'=>array('admin')),
+    array('label'=>Yii::t('app', 'List'), 'url'=>array('index')),
+        array('label'=>Yii::t('app', 'Create')),
+    array('label'=>Yii::t('app', 'Manage'), 'url'=>array('manage')),
 );
 ?>
 
-<?php printf('<h1> %s %s </h1>', Yii::t('app', 'Create New'), $this->modelClass); ?>
+<?php printf("<h1><?php echo Yii::t('app', 'Create New') . ' ' . Yii::t('app', '$this->modelClass'); ?></h1>"); ?>
 
 <?php echo "<?php\n"; ?>
 $this->renderPartial('_form', array(
-			'model' => $model,
-			'buttons' => 'create'));
+            'model' => $model,
+            'buttons' => 'create'));
 
 ?>

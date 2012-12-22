@@ -148,7 +148,7 @@ class AweCrudCode extends CrudCode {
         $str = "<label for=\"$relatedModelClass\"><?php echo Yii::t('app', '$friendlyName'); ?></label>\n";
         $str .= "<?php echo CHtml::checkBoxList('{$modelClass}[{$relatedModelClass}]', array_map('Awecms::getPrimaryKey',\$model->{$relatedModelClass}),
             CHtml::listData({$relation[1]}::model()->findAll(),'{$foreign_pk}', '{$foreign_identificationColumn}'),
-            array('attributeitem' => '{$foreign_pk}', 'checkAll' => 'Select All')); ?>";
+            array('attributeitem' => '{$foreign_pk}', 'checkAll' => Yii::t('app','Select All'))); ?>";
         return $str;
     }
 
@@ -198,7 +198,7 @@ class AweCrudCode extends CrudCode {
                 $string .= ";\nif (!empty(\$model->{$column->name})){ ?> <div class=\"right\"><a href=\"<?php echo \$model->{$column->name} ?>\" target=\"_blank\" title=\"<?php echo Awecms::generateFriendlyName('{$column->name}') ?>\"><img src=\"<?php echo \$model->{$column->name} ?>\"  alt=\"<?php echo Awecms::generateFriendlyName('{$column->name}') ?>\" title=\"<?php echo Awecms::generateFriendlyName('{$column->name}') ?>\"/></a></div><?php }";
                 return $string;
             } else if (strtolower($column->dbType) == 'longtext') {
-                return "\$this->widget('ERedactorWidget', array(
+                return "\$this->widget('EMarkitupWidget', array(
                         'model' => \$model,
                         'attribute' => '{$column->name}',
                         ));";
@@ -231,14 +231,14 @@ class AweCrudCode extends CrudCode {
             } else if (in_array(strtolower($column->dbType), $this->dateTypes)) {
                 $mode = strtolower(($column->dbType == 'timestamp') ? 'datetime' : $column->dbType);
                 return ("\$this->widget('CJuiDateTimePicker',
-						 array(
-							'model'=>\$model,
+                         array(
+                            'model'=>\$model,
                                                         'name'=>'{$modelClass}[{$column->name}]',
-							//'language'=> substr(Yii::app()->language,0,strpos(Yii::app()->language,'_')),
-                                                        'language'=> 'en',
-							'value'=>\$model->{$column->name},
+                            //'language'=> substr(Yii::app()->language,0,strpos(Yii::app()->language,'_')),
+                                                        'language'=> '',
+                            'value'=>\$model->{$column->name},
                                                         'mode' => '" . $mode . "',
-							'options'=>array(
+                            'options'=>array(
                                                                         'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
                                                                         'showButtonPanel'=>true,
                                                                         'changeYear'=>true,
@@ -246,8 +246,8 @@ class AweCrudCode extends CrudCode {
                                                                         'dateFormat'=>'yy-mm-dd',
                                                                         ),
                                                     )
-					);
-					");
+                    );
+                    ");
             } else {
                 if (in_array(strtolower($column->name), $this->passwordFields))
                     $inputField = 'passwordField';
@@ -276,6 +276,7 @@ class AweCrudCode extends CrudCode {
                 if ($relation[2] == $columnName) {
                     $relatedModel = CActiveRecord::model($relation[1]);
                     $relatedColumnName = $relationName . '->' . AweCrudCode::getIdentificationColumnFromTableSchema($relatedModel->tableSchema);
+                    $relatedModelName = $relation[1];
                 }
             }
 
@@ -288,7 +289,7 @@ class AweCrudCode extends CrudCode {
             }
 
               return "array(
-                			'name'   => '{$column->name}',
+                            'name'   => '{$column->name}',
                       'value'  => 'isset(\$data->{$relatedColumnName})?\$data->{$relatedColumnName}:\"N/A\"',
                       'filter' => $filter,
                 )";
@@ -305,17 +306,17 @@ class AweCrudCode extends CrudCode {
             if ($this->isJToggleColumnEnabled) {
                 return "array(
                                         'class' => 'JToggleColumn',
-					'name' => '{$column->name}',
-					'filter' => array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')),
+                    'name' => '{$column->name}',
+                    'filter' => array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')),
                                         'model' => get_class(\$model),
                                         'htmlOptions' => array('style' => 'text-align:center;min-width:60px;')
-					)";
+                    )";
             }else
                 return "array(
-					'name' => '{$column->name}',
-					'value' => '(\$data->{$column->name} === 0) ? Yii::t(\\'app\\', \\'No\\') : Yii::t(\\'app\\', \\'Yes\\')',
-					'filter' => array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')),
-					)";
+                    'name' => '{$column->name}',
+                    'value' => '(\$data->{$column->name} === 0) ? Yii::t(\\'app\\', \\'No\\') : Yii::t(\\'app\\', \\'Yes\\')',
+                    'filter' => array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')),
+                    )";
         } else // Common column.
             return "'{$column->name}'";
     }

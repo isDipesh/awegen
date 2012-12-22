@@ -10,7 +10,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 
 <?php 
         $authpath = 'ext.awegen.AweCrud.templates.default.auth.';
-	Yii::app()->controller->renderPartial($authpath . $this->authtype);
+    Yii::app()->controller->renderPartial($authpath . $this->authtype);
 ?>
 
     public function actionIndex() {
@@ -35,14 +35,14 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
             $model->setAttributes($_POST['<?php echo $this->modelClass; ?>']);
 
 <?php
-			
-			foreach(CActiveRecord::model($this->modelClass)->relations() as $key => $relation)
-			{
-				if($relation[0] == CActiveRecord::BELONGS_TO || $relation[0] == CActiveRecord::MANY_MANY)
-				{
-				printf("\t\t\t if (isset(\$_POST['$this->modelClass']['$key'])) \$model->$key = \$_POST['$this->modelClass']['$key'];\n");	
-				}
-			}
+            
+            foreach(CActiveRecord::model($this->modelClass)->relations() as $key => $relation)
+            {
+                if($relation[0] == CActiveRecord::BELONGS_TO || $relation[0] == CActiveRecord::MANY_MANY)
+                {
+                printf("\t\t\t if (isset(\$_POST['$this->modelClass']['$key'])) \$model->$key = \$_POST['$this->modelClass']['$key'];\n");	
+                }
+            }
 ?>
                 
                 try {
@@ -72,10 +72,10 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
         if(isset($_POST['<?php echo $this->modelClass; ?>'])) {
             $model->setAttributes($_POST['<?php echo $this->modelClass; ?>']);
 <?php
-			foreach(CActiveRecord::model($this->modelClass)->relations() as $key => $relation) {
-				if($relation[0] == CActiveRecord::BELONGS_TO || $relation[0] == CActiveRecord::MANY_MANY)
+            foreach(CActiveRecord::model($this->modelClass)->relations() as $key => $relation) {
+                if($relation[0] == CActiveRecord::BELONGS_TO || $relation[0] == CActiveRecord::MANY_MANY)
                                     printf("if (isset(\$_POST['$this->modelClass']['$key'])) \$model->$key = \$_POST['$this->modelClass']['$key'];\n\t\telse\n\t\t\$model->$key = array();\n");	
-			}
+            }
 ?>
                 try {
                     if($model->save()) {
@@ -107,7 +107,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
             }
 
             if (!Yii::app()->getRequest()->getIsAjaxRequest()) {
-                            $this->redirect(array('admin'));
+                            $this->redirect(array('index'));
             }
         }
         else
@@ -115,14 +115,14 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
                 Yii::t('app', 'Invalid request.'));
     }
                 
-    public function actionAdmin() {
+    public function actionManage() {
         $model = new <?php echo $this->modelClass; ?>('search');
         $model->unsetAttributes();
 
         if (isset($_GET['<?php echo $this->modelClass; ?>']))
                 $model->setAttributes($_GET['<?php echo $this->modelClass; ?>']);
 
-        $this->render('admin', array(
+        $this->render('manage', array(
                 'model' => $model,
         ));
     }
@@ -140,7 +140,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
         }
         else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');

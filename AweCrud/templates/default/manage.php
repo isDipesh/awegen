@@ -9,8 +9,9 @@ echo "\$this->breadcrumbs = array(
 
 if(!isset($this->menu) || $this->menu === array())
 $this->menu=array(
-array('label'=>Yii::t('app', 'Create') , 'url'=>array('create')),
 array('label'=>Yii::t('app', 'List') , 'url'=>array('index')),
+array('label'=>Yii::t('app', 'Create') , 'url'=>array('create')),
+array('label'=>Yii::t('app', 'Manage')),
 );
 
 
@@ -39,18 +40,23 @@ echo "<?php echo Yii::t('app', '" . $this->pluralize($this->class2name($this->mo
     'model'=>\$model,
 )); ?>\n"; ?>
 </div><!-- search-form -->
-<?php echo '<?php'; ?> $this->widget('zii.widgets.grid.CGridView', array(
-	'id' => '<?php echo $this->class2id($this->modelClass); ?>-grid',
-	'dataProvider' => $model->search(),
-	'filter' => $model,
-	'columns' => array(
+
+<?php echo '<?php'; ?> if (count($model->search()->data)) {
+    $this->widget('zii.widgets.grid.CGridView', array(
+    'id' => '<?php echo $this->class2id($this->modelClass); ?>-grid',
+    'dataProvider' => $model->search(),
+    'filter' => $model,
+    'columns' => array(
 <?php
 foreach ($this->tableSchema->columns as $column) {
   echo "        " . $this->generateGridViewColumn($column) . ",\n";
 }
 ?>
 array(
-			'class' => 'CButtonColumn',
-		),
-	),
-)); ?>
+            'class' => 'CButtonColumn',
+        ),
+    ),
+));
+} else {
+    echo Yii::t('app', 'No results found!');
+}

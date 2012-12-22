@@ -7,7 +7,7 @@ awegen borrows goodies from giix and gtc.
 
 1. Generates textarea for `text` db type
 2. Genearates textarea with markitp editor for `longtext` db type
-(Uses [markitup widget](http://yiiext.github.com/extensions/markitup-widget/))
+(Uses redactor)
 3. Generates checkbox for `boolean` db types
 4. Uses JToggleColumn for `boolean` types in Admin/CGridView
 (Uses [JToggleColumn extension](http://www.yiiframework.com/extension/jtogglecolumn/))
