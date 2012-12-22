@@ -198,7 +198,7 @@ class AweCrudCode extends CrudCode {
                 $string .= ";\nif (!empty(\$model->{$column->name})){ ?> <div class=\"right\"><a href=\"<?php echo \$model->{$column->name} ?>\" target=\"_blank\" title=\"<?php echo Awecms::generateFriendlyName('{$column->name}') ?>\"><img src=\"<?php echo \$model->{$column->name} ?>\"  alt=\"<?php echo Awecms::generateFriendlyName('{$column->name}') ?>\" title=\"<?php echo Awecms::generateFriendlyName('{$column->name}') ?>\"/></a></div><?php }";
                 return $string;
             } else if (strtolower($column->dbType) == 'longtext') {
-                return "\$this->widget('EMarkitupWidget', array(
+                return "\$this->widget('ERedactorWidget', array(
                         'model' => \$model,
                         'attribute' => '{$column->name}',
                         ));";
