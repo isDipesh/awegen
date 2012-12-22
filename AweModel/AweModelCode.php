@@ -104,15 +104,15 @@ class AweModelCode extends ModelCode {
         $behaviors = 'return array(';
         if (count($this->relations) > 0)
             $behaviors .= "'CSaveRelationsBehavior', array(
-				'class' => 'CSaveRelationsBehavior'),";
+                'class' => 'CSaveRelationsBehavior'),";
 
         foreach ($columns as $column) {
             if (in_array($column->name, $this->time_fields)) {
                 $behaviors .= sprintf("\n\t\t'CTimestampBehavior' => array(
-				'class' => 'zii.behaviors.CTimestampBehavior',
-				'createAttribute' => %s,
-				'updateAttribute' => %s,
-				\t),\n", $this->getCreatetimeAttribute($columns), $this->getUpdatetimeAttribute($columns));
+                'class' => 'zii.behaviors.CTimestampBehavior',
+                'createAttribute' => %s,
+                'updateAttribute' => %s,
+                \t),\n", $this->getCreatetimeAttribute($columns), $this->getUpdatetimeAttribute($columns));
                 break; // once a column is found, we are done
             }
         }
@@ -172,7 +172,7 @@ class AweModelCode extends ModelCode {
         if ($email !== array())
             $rules[] = "array('" . implode(', ', $email) . "', 'email')";
         if ($url !== array())
-            $rules[] = "array('" . implode(', ', $url) . "', 'url')";
+            $rules[] = "array('" . implode(', ', $url) . "', 'url', 'defaultScheme' => 'http')";
         if ($length !== array()) {
             foreach ($length as $len => $cols)
                 $rules[] = "array('" . implode(', ', $cols) . "', 'length', 'max' => $len)";
