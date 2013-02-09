@@ -50,7 +50,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
                     if (isset($_GET['returnUrl'])) {
                             $this->redirect($_GET['returnUrl']);
                     } else {
-                            $this->redirect(array('view','id'=>$model-><?php echo Awecms::getPrimaryKey($this) ?>));
+                            $this->redirect(array('view','id'=>$model-><?php echo Awecms::getPrimaryKeyColumn($this) ?>));
                     }
                 }
                 } catch (Exception $e) {
@@ -82,7 +82,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
                         if (isset($_GET['returnUrl'])) {
                                 $this->redirect($_GET['returnUrl']);
                         } else {
-                                $this->redirect(array('view','id'=>$model-><?php echo Awecms::getPrimaryKey($this) ?>));
+                                $this->redirect(array('view','id'=>$model-><?php echo Awecms::getPrimaryKeyColumn($this) ?>));
                         }
                     }
                 } catch (Exception $e) {

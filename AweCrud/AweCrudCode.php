@@ -143,7 +143,7 @@ class AweCrudCode extends CrudCode {
 
     public function getNMField($relation, $relatedModelClass, $modelClass)
     {
-        $foreign_pk = Awecms::getPrimaryKey(CActiveRecord::model($relation[1]));
+        $foreign_pk = Awecms::getPrimaryKeyColumn(CActiveRecord::model($relation[1]));
 
         $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema(CActiveRecord::model($relation[1])->getTableSchema());
         $friendlyName = ucfirst($relatedModelClass);
@@ -158,7 +158,7 @@ class AweCrudCode extends CrudCode {
         if ($column->isForeignKey) {
             $relation = $this->findRelation($modelClass, $column);
             //get primary key of the foreign model
-            $foreign_pk = Awecms::getPrimaryKey(CActiveRecord::model($relation[3]));
+            $foreign_pk = Awecms::getPrimaryKeyColumn(CActiveRecord::model($relation[3]));
             $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema(CActiveRecord::model($relation[3])->getTableSchema());
             //if the relation name is parent or child and if the relation is with items from same model,
             //don't allow any item to be parent/child of itself
@@ -285,7 +285,7 @@ class AweCrudCode extends CrudCode {
             $filter = '';
             if( $relatedModel )
             {
-              $foreign_pk = Awecms::getPrimaryKey($relatedModel);
+              $foreign_pk = Awecms::getPrimaryKeyColumn($relatedModel);
               $foreign_identificationColumn = self::getIdentificationColumnFromTableSchema($relatedModel->getTableSchema());
               $relatedModelName = get_class($relatedModel);
               $filter = "CHtml::listData({$relatedModelName}::model()->findAll(),'{$foreign_pk}','{$foreign_identificationColumn}')";

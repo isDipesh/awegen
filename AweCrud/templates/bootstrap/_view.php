@@ -6,7 +6,7 @@
     if (!in_array($identificationColumn, $possibleIdentifiers)) {
         echo "<h2><?php echo CHtml::encode(\$data->getAttributeLabel('{$identificationColumn}')); ?>:</h2>\n";
     }
-    echo "<h2><?php echo CHtml::link(CHtml::encode(\$data->{$identificationColumn}), array('view', '".Awecms::getPrimaryKey($this)."' => \$data->".Awecms::getPrimaryKey($this).")); ?></h2>\n";
+    echo "<h2><?php echo CHtml::link(CHtml::encode(\$data->{$identificationColumn}), array('view', '".Awecms::getPrimaryKeyColumn($this)."' => \$data->".Awecms::getPrimaryKeyColumn($this).")); ?></h2>\n";
     foreach ($this->tableSchema->columns as $column) {
         if ($column->name !== $identificationColumn && !$column->isPrimaryKey && !in_array(strtolower($column->name), $this->passwordFields)) {
             
