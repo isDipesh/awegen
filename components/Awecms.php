@@ -19,11 +19,14 @@ class Awecms {
     public static function getPrimaryKey($ar) {
         if (is_numeric($ar))
             return $ar;
-        $pk = $ar->getTableSchema()->primaryKey;
+        if (get_class($ar) == 'CMysqlTableSchema')
+            $tableSchema = $ar;
+        else
+            $tableSchema = $ar->getTableSchema();
+        $pk = $tableSchema->primaryKey;
         if (is_array($pk)) {
             $pk = $pk[0];
         }
-
         return $pk;
     }
 
