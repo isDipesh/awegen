@@ -32,7 +32,7 @@ awegen borrows goodies from giix and gtc.
 
 ## Installation
 
-Download from <https://github.com/awecms/awegen/downloads>
+Download from <https://github.com/xtranophilist/awegen/zipball/master>
 
 Extract the awegen folder from the archive to extensions directory of your application.
 
