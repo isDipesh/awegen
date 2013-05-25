@@ -1,6 +1,6 @@
 # awegen
 
-awegen is a code generator for Yii framework.  
+awegen is a code generator for Yii framework with optional Bootstrap support.  
 awegen borrows goodies from giix and gtc.
 
 ## What It Does?
