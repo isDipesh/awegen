@@ -1,7 +1,9 @@
 # awegen
 
-awegen is a code generator for Yii framework with optional Bootstrap support.  
+awegen is a code generator for Yii framework with optional Twitter Bootstrap support.  
 awegen borrows goodies from giix and gtc.
+
+**[Note: This extension isn't maintained any more.]**
 
 ## What It Does?
 
