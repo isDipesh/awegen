@@ -1,8 +1,9 @@
 <?php
 
+require_once(__DIR__."/../AweModel/AweModelCode.php");
 class AweModelGenerator extends CCodeGenerator {
 
-    public $codeModel = 'ext.awegen.AweModel.AweModelCode';
+    public $codeModel = 'AweModelCode';
 
     protected function getTables() {
         $tables = Yii::app()->db->schema->tableNames;

@@ -24,7 +24,7 @@ class AweModelCode extends ModelCode {
     public $urlFields = array('url', 'link', 'uri', 'homepage', 'webpage', 'website', 'profile_url', 'profile_link');
     public $create_time = array('create_time', 'createtime', 'created_at', 'createdat', 'created_time', 'createdtime');
     public $update_time = array('changed', 'changed_at', 'updatetime', 'modified_at', 'updated_at', 'update_time', 'timestamp', 'updatedat');
-    public $time_fields;
+    public $time_fields = array('timestamp');
 
     public function init() {
         $this->time_fields = array_merge($this->create_time, $this->update_time);
@@ -56,14 +56,14 @@ class AweModelCode extends ModelCode {
             $this->tables = array($this->getTableSchema($this->tableName));
 
         $this->relations = $this->generateRelations();
-            $this->files = array();
+        $this->files = array();
 
         $this->files = array();
         foreach ($this->tables as $table) {
 
             foreach ($table->columns as $key => $column)
                 if (in_array($column->dbType, array('timestamp')))
-                    unset($table->columns[$key]);
+                unset($table->columns[$key]);
 
 
             $tableName = $this->removePrefix($table->name);
@@ -73,30 +73,30 @@ class AweModelCode extends ModelCode {
             $this->baseModelClass = 'Base' . $className;
 
             $params = array(
-                'tableName' => $schema === '' ? $tableName : $schema . '.' . $tableName,
-                'modelClass' => $className,
-                'columns' => $table->columns,
-                'labels' => $this->generateLabels($table),
-                'rules' => $this->generateRules($table),
-                'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
+                    'tableName' => $schema === '' ? $tableName : $schema . '.' . $tableName,
+                    'modelClass' => $className,
+                    'columns' => $table->columns,
+                    'labels' => $this->generateLabels($table),
+                    'rules' => $this->generateRules($table),
+                    'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
             );
 
             $this->files[] = new CCodeFile(
-                            Yii::getPathOfAlias($this->modelPath . '.' . $className) . '.php',
-                            $this->render($templatePath . DIRECTORY_SEPARATOR . 'model.php', $params)
+                    Yii::getPathOfAlias($this->modelPath . '.' . $className) . '.php',
+                    $this->render($templatePath . DIRECTORY_SEPARATOR . 'model.php', $params)
             );
 
             $this->files[] = new CCodeFile(
-                            Yii::getPathOfAlias($this->baseModelPath . '.' . $this->baseModelClass) . '.php',
-                            $this->render($templatePath . DIRECTORY_SEPARATOR . '_base' . DIRECTORY_SEPARATOR . 'basemodel.php', $params)
+                    Yii::getPathOfAlias($this->baseModelPath . '.' . $this->baseModelClass) . '.php',
+                    $this->render($templatePath . DIRECTORY_SEPARATOR . '_base' . DIRECTORY_SEPARATOR . 'basemodel.php', $params)
             );
         }
     }
 
     public function requiredTemplates() {
         return array(
-            'model.php',
-            '_base' . DIRECTORY_SEPARATOR . 'basemodel.php',
+                'model.php',
+                '_base' . DIRECTORY_SEPARATOR . 'basemodel.php',
         );
     }
 
@@ -104,15 +104,15 @@ class AweModelCode extends ModelCode {
         $behaviors = 'return array(';
         if (count($this->relations) > 0)
             $behaviors .= "'CSaveRelationsBehavior', array(
-                'class' => 'CSaveRelationsBehavior'),";
+            'class' => 'CSaveRelationsBehavior'),";
 
         foreach ($columns as $column) {
             if (in_array($column->name, $this->time_fields)) {
                 $behaviors .= sprintf("\n\t\t'CTimestampBehavior' => array(
-                'class' => 'zii.behaviors.CTimestampBehavior',
-                'createAttribute' => %s,
-                'updateAttribute' => %s,
-                \t),\n", $this->getCreatetimeAttribute($columns), $this->getUpdatetimeAttribute($columns));
+                        'class' => 'zii.behaviors.CTimestampBehavior',
+                        'createAttribute' => %s,
+                        'updateAttribute' => %s,
+                        \t),\n", $this->getCreatetimeAttribute($columns), $this->getUpdatetimeAttribute($columns));
                 break; // once a column is found, we are done
             }
         }
@@ -185,16 +185,16 @@ class AweModelCode extends ModelCode {
     function getCreatetimeAttribute($columns) {
         foreach ($this->create_time as $try)
             foreach ($columns as $column)
-                if ($try == $column->name)
-                    return sprintf("'%s'", $column->name);
+            if ($try == $column->name)
+            return sprintf("'%s'", $column->name);
         return 'null';
     }
 
     function getUpdatetimeAttribute($columns) {
         foreach ($this->update_time as $try)
             foreach ($columns as $column)
-                if ($try == $column->name)
-                    return sprintf("'%s'", $column->name);
+            if ($try == $column->name)
+            return sprintf("'%s'", $column->name);
         return 'null';
     }
 
